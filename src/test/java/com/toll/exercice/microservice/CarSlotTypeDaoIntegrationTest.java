@@ -1,13 +1,10 @@
 package com.toll.exercice.microservice;
 
 import com.toll.exercice.microservice.dao.CarSlotTypeDao;
-import com.toll.exercice.microservice.models.CarSlotType;
+import com.toll.exercice.microservice.model.CarSlotType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

@@ -1,7 +1,7 @@
 package com.toll.exercice.microservice;
 
 
-import com.toll.exercice.microservice.web.controller.SlotRESTController;
+import com.toll.exercice.microservice.web.controller.SlotController;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SlotRESTControllerTest {
+public class SlotControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -28,12 +28,12 @@ public class SlotRESTControllerTest {
     @Test
     public void getCarSlotsAPI() throws Exception
     {
-        /*mvc.perform( MockMvcRequestBuilders
-                .get("v1:carSlots/{type}", "Gasoline")
+        mvc.perform( MockMvcRequestBuilders
+                .get("/v1/carSlots/{type}", "Gasoline")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.slotType").exists())
+                .andExpect(status().isOk());
+                /*.andExpect(MockMvcResultMatchers.jsonPath("$.slotType").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.slotType.typeName").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.slotType.typeName").value("Gasoline"));*/
     }

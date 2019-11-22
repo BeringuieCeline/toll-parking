@@ -1,7 +1,7 @@
 package com.toll.exercice.microservice;
 
 import com.toll.exercice.microservice.dao.BillingDao;
-import com.toll.exercice.microservice.models.Billing;
+import com.toll.exercice.microservice.model.Billing;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -26,7 +26,7 @@ public class BillingDaoIntegrationTest {
 
     @Test
     public void whenFindByCarId_thenReturnBill() {
-        Billing bill = new Billing(UUID.fromString("5d4992b6-0c54-11ea-8d71-362b9e155667"), LocalDateTime.now(), null);
+        Billing bill = new Billing(UUID.fromString("5d4992b6-0c54-11ea-8d71-362b9e155667"), LocalDateTime.now(), null, -1.0f);
         entityManager.persist(bill);
         entityManager.flush();
 

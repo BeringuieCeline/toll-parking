@@ -1,6 +1,6 @@
 package com.toll.exercice.microservice.dao;
 
-import com.toll.exercice.microservice.models.CarSlotType;
+import com.toll.exercice.microservice.model.CarSlotType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

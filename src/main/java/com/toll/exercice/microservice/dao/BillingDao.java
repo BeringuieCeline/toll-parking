@@ -1,6 +1,6 @@
 package com.toll.exercice.microservice.dao;
 
-import com.toll.exercice.microservice.models.Billing;
+import com.toll.exercice.microservice.model.Billing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

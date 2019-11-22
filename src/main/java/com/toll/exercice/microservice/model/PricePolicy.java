@@ -1,7 +1,6 @@
-package com.toll.exercice.microservice.models;
+package com.toll.exercice.microservice.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
