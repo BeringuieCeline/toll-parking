@@ -68,9 +68,9 @@ public class SlotControllerTest {
     @Order(1)
     public void getCarSlotsAPI() throws Exception {
         // test all base case
-        testGatCarSlotsForSpecificType(GASOLINE);
-        testGatCarSlotsForSpecificType(LOW_ELECTRICAL);
-        testGatCarSlotsForSpecificType(HIGH_ELECTRICAL);
+        testGetCarSlotsForSpecificType(GASOLINE);
+        testGetCarSlotsForSpecificType(LOW_ELECTRICAL);
+        testGetCarSlotsForSpecificType(HIGH_ELECTRICAL);
 
         // test not correct type
         mvc.perform( MockMvcRequestBuilders
@@ -88,7 +88,7 @@ public class SlotControllerTest {
 
     }
 
-    private void testGatCarSlotsForSpecificType(String typeName) throws Exception {
+    private void testGetCarSlotsForSpecificType(String typeName) throws Exception {
         mvc.perform( MockMvcRequestBuilders
                 .get(GET_CAR_SLOTS, typeName)
                 .accept(MediaType.APPLICATION_JSON))
@@ -206,6 +206,12 @@ public class SlotControllerTest {
         testGetBill(gasolineCar);
         testGetBill(lowElectricalCar);
         testGetBill(highElectricalCar);
+
+        mvc.perform( MockMvcRequestBuilders
+                .get(GET_BILL, UUID.randomUUID())
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
     private void testGetBill(UUID carId) throws Exception
@@ -237,6 +243,13 @@ public class SlotControllerTest {
         testDeleteCar(gasolineCar, 1);
         testDeleteCar(lowElectricalCar, 2);
         testDeleteCar(highElectricalCar, 3);
+
+
+        mvc.perform( MockMvcRequestBuilders
+                .delete(DELETE_CAR_SLOTS, UUID.randomUUID())
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     private void testDeleteCar(UUID carId, int id) throws Exception{

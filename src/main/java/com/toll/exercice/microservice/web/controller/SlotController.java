@@ -126,11 +126,11 @@ public class SlotController {
         BillService billingService = new BillService();
 
         CarSlot carSlot = carSlotDao.findByCarNumber(uuid);
-        Bill bill = carSlot.getBill();
 
-        if (bill == null) {
+        if (carSlot == null) {
             return ResponseEntity.notFound().build();
         }
+        Bill bill = carSlot.getBill();
 
         if (!billingService.isStillValid(bill, LocalDateTime.now())) {
             return ResponseEntity.status(403).build();
