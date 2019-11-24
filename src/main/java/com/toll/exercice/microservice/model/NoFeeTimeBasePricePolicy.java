@@ -1,3 +1,9 @@
+/**
+ *
+ * @author  Djoé DENNE
+ * @version 1.0
+ * @since   2019-11-23
+ */
 package com.toll.exercice.microservice.model;
 
 import javax.persistence.DiscriminatorValue;
@@ -10,10 +16,10 @@ public class NoFeeTimeBasePricePolicy extends PricePolicy {
     protected float hourPrice = 10.0f;
 
     @Override
-    public void fillBilling(Billing billing)
+    public void fillBilling(Bill bill)
     {
-        billing.setPrice(
-                (billing.getParkedAt().until(billing.getLeaveAt(), ChronoUnit.HOURS)
+        bill.setPrice(
+                (bill.getParkedAt().until(bill.getLeaveAt(), ChronoUnit.HOURS)
                  + 1)
                  * hourPrice);
     }

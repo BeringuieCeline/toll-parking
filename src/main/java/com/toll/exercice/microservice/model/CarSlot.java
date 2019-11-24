@@ -1,3 +1,9 @@
+/**
+ *
+ * @author  Djoé DENNE
+ * @version 1.0
+ * @since   2019-11-23
+ */
 package com.toll.exercice.microservice.model;
 
 import lombok.*;
@@ -6,6 +12,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Class model for car slot
+ */
 @Entity
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -27,5 +36,5 @@ public class CarSlot {
     protected UUID carNumber;
     @OneToOne(cascade = CascadeType.ALL)
     @Getter @Setter(AccessLevel.PUBLIC)
-    protected Billing bill;
+    protected Bill bill;
 }

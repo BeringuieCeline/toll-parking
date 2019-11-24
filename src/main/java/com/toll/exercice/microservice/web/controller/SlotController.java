@@ -1,26 +1,39 @@
+/**
+ * Rest controller, entry point of the micro-service, contains interface to access to the service
+ * @author  Djoé DENNE
+ * @version 1.0
+ * @since   2019-11-23
+ */
 package com.toll.exercice.microservice.web.controller;
 
-import com.toll.exercice.microservice.dao.BillingDao;
+import com.toll.exercice.microservice.dao.BillDao;
 import com.toll.exercice.microservice.dao.CarSlotDao;
 import com.toll.exercice.microservice.dao.CarSlotTypeDao;
-import com.toll.exercice.microservice.model.Billing;
+import com.toll.exercice.microservice.model.Bill;
 import com.toll.exercice.microservice.model.CarSlot;
 import com.toll.exercice.microservice.model.CarSlotType;
-import com.toll.exercice.microservice.service.BillingService;
+import com.toll.exercice.microservice.service.BillService;
 import com.toll.exercice.microservice.service.CarSlotService;
 import com.toll.exercice.microservice.service.CarSlotTypeService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * Controller that contain jnterface definition
+ */
 @RestController
+@RequestMapping("/v1")
+@Api(tags = {"Toll Parking API"})
+@SwaggerDefinition(tags = {
+        @Tag(name = "Toll Parking API", description = "Operations to access to a car slot")
+})
 public class SlotController {
 
     @Autowired
@@ -30,9 +43,16 @@ public class SlotController {
     private CarSlotDao carSlotDao;
 
     @Autowired
-    private BillingDao billingDao;
+    private BillDao billDao;
 
-    @RequestMapping(value = "/v1/carSlots/{type}", method = RequestMethod.GET)
+    @GetMapping(value = "/carSlots/{type}")
+    @ApiOperation(value = "View a list of available car slots for a specific type", response = CarSlot.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 400, message = "Wrong type specified"),
+            @ApiResponse(code = 204, message = "No free slot found")
+    }
+    )
     public ResponseEntity<List<CarSlot>> carSlots(@PathVariable String type) {
         CarSlotType carSlotType = carSlotTypeDao.findByTypeName(type);
         if (carSlotType == null) {
@@ -48,7 +68,13 @@ public class SlotController {
         return ResponseEntity.ok(slots);
     }
 
-    @RequestMapping(value = "/v1/car/{id}/{type}", method = RequestMethod.POST)
+    @PostMapping(value = "/car/{id}/{type}")
+    @ApiOperation(value = "put a car in a specific slot", response = UUID.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Car successfully parked"),
+            @ApiResponse(code = 400, message = "Slot not exist or not free, or not correct type")
+    }
+    )
     public ResponseEntity<UUID> parkCar(@PathVariable int id, @PathVariable String type) {
         CarSlotTypeService carSlotTypeService = new CarSlotTypeService();
         CarSlotService carSlotService = new CarSlotService();
@@ -58,15 +84,21 @@ public class SlotController {
             return ResponseEntity.badRequest().build();
         }
 
-        Billing bill = carSlotService.enter(carSlot, type);
+        Bill bill = carSlotService.enter(carSlot, type);
 
         carSlotDao.save(carSlot);
-        billingDao.save(bill);
+        billDao.save(bill);
         return ResponseEntity.ok(bill.getCarId());
     }
 
-    @RequestMapping(value = "/v1/bill/{uuid}", method = RequestMethod.GET)
-    public ResponseEntity<Billing> bill(@PathVariable UUID uuid) {
+    @GetMapping(value = "/bill/{uuid}")
+    @ApiOperation(value = "Retreive the bill before leaving the car slot", response = Bill.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved bill"),
+            @ApiResponse(code = 204, message = "Car not found")
+    }
+    )
+    public ResponseEntity<Bill> bill(@PathVariable UUID uuid) {
         CarSlotService carSlotService = new CarSlotService();
 
         CarSlot carSlot = carSlotDao.findByCarNumber(uuid);
@@ -74,21 +106,27 @@ public class SlotController {
             return ResponseEntity.noContent().build();
         }
 
+        Bill bill = carSlotService.bill(carSlot, uuid);
 
-        Billing bill = carSlotService.bill(carSlot, uuid);
-
-        billingDao.save(bill);
+        billDao.save(bill);
         carSlotDao.save(carSlot);
         return ResponseEntity.ok(bill);
     }
 
-    @RequestMapping(value = "/v1/car/{uuid}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/car/{uuid}")
+    @ApiOperation(value = "Remove car from car slot", response = Void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Car successfully remove from car slot"),
+            @ApiResponse(code = 204, message = "Car not found"),
+            @ApiResponse(code = 403, message = "Bill no more valid, you should re-bill")
+    }
+    )
     public ResponseEntity<Void> takeCar(@PathVariable UUID uuid) {
         CarSlotService carSlotService = new CarSlotService();
-        BillingService billingService = new BillingService();
+        BillService billingService = new BillService();
 
         CarSlot carSlot = carSlotDao.findByCarNumber(uuid);
-        Billing bill = carSlot.getBill();
+        Bill bill = carSlot.getBill();
 
         if (bill == null) {
             return ResponseEntity.notFound().build();
@@ -99,7 +137,7 @@ public class SlotController {
         }
 
         carSlotService.leave(carSlot);
-        billingDao.delete(bill);
+        billDao.delete(bill);
         carSlotDao.save(carSlot);
         return ResponseEntity.accepted().build();
     }

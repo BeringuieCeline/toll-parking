@@ -2,23 +2,17 @@ package com.toll.exercice.microservice;
 
 
 import com.toll.exercice.microservice.dao.CarSlotDao;
-import com.toll.exercice.microservice.model.Billing;
+import com.toll.exercice.microservice.model.Bill;
 import com.toll.exercice.microservice.model.CarSlot;
-import com.toll.exercice.microservice.service.CarSlotService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -27,8 +21,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -187,7 +181,7 @@ public class SlotControllerTest {
                 .isAfterOrEqualTo(now)
                 .isBeforeOrEqualTo(now.plusSeconds(1));
 
-        Billing bill = carSlot.getBill();
+        Bill bill = carSlot.getBill();
         assertThat(bill)
                 .isNotNull();
 

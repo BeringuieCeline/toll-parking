@@ -1,3 +1,9 @@
+/**
+ *
+ * @author  Djoé DENNE
+ * @version 1.0
+ * @since   2019-11-23
+ */
 package com.toll.exercice.microservice.model;
 
 import javax.persistence.*;
@@ -10,5 +16,5 @@ public abstract class PricePolicy {
     @GeneratedValue
     protected int id;
 
-    public abstract void fillBilling(Billing billing);
+    public abstract void fillBilling(Bill billing);
 }

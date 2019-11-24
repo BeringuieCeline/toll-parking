@@ -1,3 +1,9 @@
+/**
+ *
+ * @author  Djoé DENNE
+ * @version 1.0
+ * @since   2019-11-23
+ */
 package com.toll.exercice.microservice.model;
 
 import lombok.*;
@@ -5,14 +11,16 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+/**
+ * Class model for car slot bill
+ */
 @Entity
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Billing {
+public class Bill {
     @Id
     @Getter
     private UUID carId;
