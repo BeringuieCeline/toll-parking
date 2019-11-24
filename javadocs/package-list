@@ -1,0 +1,6 @@
+com.toll.exercice.microservice
+com.toll.exercice.microservice.configuration
+com.toll.exercice.microservice.dao
+com.toll.exercice.microservice.model
+com.toll.exercice.microservice.service
+com.toll.exercice.microservice.web.controller

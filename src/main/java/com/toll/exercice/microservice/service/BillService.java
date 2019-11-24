@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Services to manage a bill. This class contain all the logic of a Bill and should be use for extrect orn modify data from <code>Bill</code>>
+ * Services to manage a bill. This class contain all the logic of a Bill and should be use for extrect orn modify data from <code>Bill</code>
  */
 public class BillService {
 
