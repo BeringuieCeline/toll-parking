@@ -70,7 +70,7 @@ Access to the Jacoco report by openning the file : `./target/site/jacoco/index.h
 ## How to use
 
 Once it's build and started you can access to the Swagger UI through :  http://localhost:9090/swagger-ui.html
-You can call the service using [Postman](https://www.getpostman.com/) or [Curl](https://curl.haxx.se/)
+You can call the service using [Postman](https://www.getpostman.com/) or [Curl](https://curl.haxx.se/). 
 The call order is the following one :
 * `GET : /v1/carSlots/{type}` to retrieve the list of the available slots of type `type`. `type`can be : `"Gasoline"`, `"Low Powered electrical"` or `"High Powered electrical"`
 * `POST : /v1/car/{id}/{type}`  to park your car in slot `id`, `type` refer to the type of your car and can be : `"Gasoline"`, `"Low Powered electrical"` or `"High Powered electrical"`. Service return an unique ID to identify your car 
