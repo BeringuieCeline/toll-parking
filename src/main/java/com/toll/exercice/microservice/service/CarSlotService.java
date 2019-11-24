@@ -22,17 +22,10 @@ public class CarSlotService {
     /**
      * Flag the car slot <code>carSlot</code> as Not free by initializing the parking time and creating the bill
      * @param carSlot the CarSlot to flag
-     * @param carType The type of the car that want to park here
-     * @return the created bill object for this slot or null if <code>carType</code> doesn't match
+     * @return the created bill object for this slot
      */
-    public Bill enter(CarSlot carSlot, String carType)
+    public Bill enter(CarSlot carSlot)
     {
-        CarSlotTypeService carSlotTypeService = new CarSlotTypeService();
-        // if not supported car type or if slot is not free
-        if(!carSlotTypeService.isAcceptedCar(carSlot.getSlotType(), carType) || !isFree(carSlot)) {
-            return null;
-        }
-
         carSlot.setParkedAt(LocalDateTime.now());
         carSlot.setCarNumber(UUID.randomUUID());
 
@@ -44,20 +37,17 @@ public class CarSlotService {
     /**
      * close thev billing with the current time for the car slot <code>carSlot</code>. update the price of the billing
      * @param carSlot the CarSlot to bill
-     * @param carNumber car id to check if it's the correct car that ask for the billing
-     * @return the final billing orb null if <code>carNumber</code> doesn't match
+     * @return the final bilL
      */
-    public Bill bill(CarSlot carSlot, UUID carNumber)
+    public Bill bill(CarSlot carSlot)
     {
-        // if another car try to bo bill the car slot
-        if(!isCorrectCar(carSlot, carNumber)) {
-            return null;
-        }
+        PricePolicyService pricePolicyService = new PricePolicyService();
+
         BillService billService = new BillService();
         billService.closeIt(carSlot.getBill());
         PricePolicy pricePolicy = carSlot.getOwner().getPricePolicy();
         // complete billing with the Price Policy of the Owner
-        pricePolicy.fillBilling(carSlot.getBill());
+        pricePolicyService.fillBill(pricePolicy, carSlot.getBill());
         return carSlot.getBill();
     }
 

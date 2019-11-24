@@ -84,7 +84,7 @@ public class SlotController {
             return ResponseEntity.badRequest().build();
         }
 
-        Bill bill = carSlotService.enter(carSlot, type);
+        Bill bill = carSlotService.enter(carSlot);
 
         carSlotDao.save(carSlot);
         billDao.save(bill);
@@ -106,7 +106,7 @@ public class SlotController {
             return ResponseEntity.noContent().build();
         }
 
-        Bill bill = carSlotService.bill(carSlot, uuid);
+        Bill bill = carSlotService.bill(carSlot);
 
         billDao.save(bill);
         carSlotDao.save(carSlot);

@@ -6,15 +6,27 @@
  */
 package com.toll.exercice.microservice.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "POLICY_TYPE")
-public abstract class PricePolicy {
+public class PricePolicy {
     @Id
     @GeneratedValue
-    protected int id;
+    private int id;
 
-    public abstract void fillBilling(Bill billing);
+    @ElementCollection
+    @Getter
+    @Setter(AccessLevel.PROTECTED)
+    private List<Float> variables;
+
+
+    @Getter
+    @Setter(AccessLevel.PROTECTED)
+    private String formula;
+
 }
