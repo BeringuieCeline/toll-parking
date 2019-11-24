@@ -48,13 +48,13 @@ public class SlotController {
         return ResponseEntity.ok(slots);
     }
 
-    @RequestMapping(value = "/v1/parkCarSlot/{id}/{type}", method = RequestMethod.POST)
-    public ResponseEntity<Billing> parkCarSlot(@PathVariable int id, @PathVariable String type) {
+    @RequestMapping(value = "/v1/car/{id}/{type}", method = RequestMethod.POST)
+    public ResponseEntity<UUID> parkCar(@PathVariable int id, @PathVariable String type) {
         CarSlotTypeService carSlotTypeService = new CarSlotTypeService();
         CarSlotService carSlotService = new CarSlotService();
 
         CarSlot carSlot = carSlotDao.findBySlotNumber(id);
-        if (carSlot == null || !carSlotTypeService.isAcceptedCar(carSlot.getSlotType(), type)) {
+        if (carSlot == null || !carSlotService.isFree(carSlot) || !carSlotTypeService.isAcceptedCar(carSlot.getSlotType(), type)) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -62,7 +62,7 @@ public class SlotController {
 
         carSlotDao.save(carSlot);
         billingDao.save(bill);
-        return ResponseEntity.ok(bill);
+        return ResponseEntity.ok(bill.getCarId());
     }
 
     @RequestMapping(value = "/v1/bill/{uuid}", method = RequestMethod.GET)
@@ -82,8 +82,8 @@ public class SlotController {
         return ResponseEntity.ok(bill);
     }
 
-    @RequestMapping(value = "/v1/takeBackCar/{uuid}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> takeBackCar(@PathVariable UUID uuid) {
+    @RequestMapping(value = "/v1/car/{uuid}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> takeCar(@PathVariable UUID uuid) {
         CarSlotService carSlotService = new CarSlotService();
         BillingService billingService = new BillingService();
 
@@ -101,6 +101,6 @@ public class SlotController {
         carSlotService.leave(carSlot);
         billingDao.delete(bill);
         carSlotDao.save(carSlot);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.accepted().build();
     }
 }
