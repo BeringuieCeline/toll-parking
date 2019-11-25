@@ -67,6 +67,10 @@ Access to the JavaDoc by openning the file : `./javadoc/index.html`
 
 Access to the Jacoco report by openning the file : `./target/site/jacoco/index.html`
 
+## Uml
+
+Find the generated Diagram class here : `.\uml\diagram.png`
+
 ## How to use
 
 Once it's build and started you can access to the Swagger UI through :  http://localhost:9090/swagger-ui.html
@@ -76,6 +80,11 @@ The call order is the following one :
 * `POST : /v1/car/{id}/{type}`  to park your car in slot `id`, `type` refer to the type of your car and can be : `"Gasoline"`, `"Low Powered electrical"` or `"High Powered electrical"`. Service return an unique ID to identify your car 
 * `GET : /v1/bill/{uuid}` to get billed, the bill will be valid for 5 minutes, if you don't leave the parking in this time, you will have to re-call the `bill` service. `uuid` refer to the unique id of your car.
 * `DELETE : /v1/car/{uuid}` leave the parking
+
+## Next steps
+
+* Use [Spring security](https://spring.io/projects/spring-security) and [Jwt](https://docs.spring.io/spring-security/site/docs/5.0.0.M5/api/org/springframework/security/jwt/Jwt.html) to do OAuth2
+
 
 ## Links
 

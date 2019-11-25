@@ -1,0 +1,140 @@
+@startuml
+
+title __CONTROLLER's Class Diagram__\n
+
+    namespace com.toll.exercice.microservice {
+      namespace web.controller {
+        class SlotController {
+            + bill()
+            + carSlots()
+            + parkCar()
+            + takeCar()
+        }
+      }
+      namespace service {
+              class BillService {
+                  + closeIt()
+                  + isStillValid()
+              }
+              class CarSlotService {
+                  + bill()
+                  + enter()
+                  + isCorrectCar()
+                  + isFree()
+                  + leave()
+              }
+              class CarSlotTypeService {
+                  + isAcceptedCar()
+              }
+              class PricePolicyService {
+                  + fillBill()
+              }
+            }
+            namespace model {
+                    class Bill {
+                        - carId : UUID
+                        - leaveAt : LocalDateTime
+                        - parkedAt : LocalDateTime
+                        - price : float
+                        + Bill()
+                        + Bill()
+                        + equals()
+                        + getCarId()
+                        + getLeaveAt()
+                        + getParkedAt()
+                        + getPrice()
+                        + hashCode()
+                        + setLeaveAt()
+                        + setPrice()
+                        # canEqual()
+                        # setParkedAt()
+                    }
+                    class CarSlot {
+                        # carNumber : UUID
+                        # parkedAt : LocalDateTime
+                        # slotNumber : int
+                        + CarSlot()
+                        + CarSlot()
+                        + equals()
+                        + getBill()
+                        + getCarNumber()
+                        + getOwner()
+                        + getParkedAt()
+                        + getSlotNumber()
+                        + getSlotType()
+                        + hashCode()
+                        + setBill()
+                        + setCarNumber()
+                        + setParkedAt()
+                        # canEqual()
+                        # setOwner()
+                        # setSlotType()
+                    }
+                    class CarSlotOwner {
+                        - id : int
+                        - name : String
+                        + CarSlotOwner()
+                        + CarSlotOwner()
+                        + equals()
+                        + getId()
+                        + getName()
+                        + getPricePolicy()
+                        + hashCode()
+                        # canEqual()
+                        # setName()
+                        # setPricePolicy()
+                    }
+                    class CarSlotType {
+                        # id : int
+                        # typeName : String
+                        + CarSlotType()
+                        + CarSlotType()
+                        + equals()
+                        + getId()
+                        + getTypeName()
+                        + hashCode()
+                        # canEqual()
+                        # setTypeName()
+                    }
+                    class PricePolicy {
+                        - formula : String
+                        - id : int
+                        - variables : List<Float>
+                        + getFormula()
+                        + getVariables()
+                        # setFormula()
+                        # setVariables()
+                    }
+                  }
+                  namespace dao {
+                          interface com.toll.exercice.microservice.dao.BillDao {
+                              {abstract} + findByCarId()
+                          }
+                          interface com.toll.exercice.microservice.dao.CarSlotDao {
+                              {abstract} + findByCarNumber()
+                              {abstract} + findBySlotNumber()
+                              {abstract} + findBySlotTypeAndCarNumberIsNullOrderBySlotNumberAsc()
+                          }
+                          interface com.toll.exercice.microservice.dao.CarSlotTypeDao {
+                              {abstract} + findByTypeName()
+                          }
+                        }
+    }
+
+
+  web.controller.SlotController o-- com.toll.exercice.microservice.dao.BillDao : billDao
+  web.controller.SlotController o-- com.toll.exercice.microservice.dao.CarSlotDao : carSlotDao
+  web.controller.SlotController o-- com.toll.exercice.microservice.dao.CarSlotTypeDao : carSlotTypeDao
+  com.toll.exercice.microservice.model.CarSlot o-- com.toll.exercice.microservice.model.Bill : bill
+  com.toll.exercice.microservice.model.CarSlot o-- com.toll.exercice.microservice.model.CarSlotOwner : owner
+  com.toll.exercice.microservice.model.CarSlot o-- com.toll.exercice.microservice.model.CarSlotType : slotType
+  com.toll.exercice.microservice.model.CarSlotOwner o-- com.toll.exercice.microservice.model.PricePolicy : pricePolicy
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
